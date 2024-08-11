@@ -96,6 +96,10 @@ class QuoteTableViewController: UITableViewController,SKPaymentTransactionObserv
             }else if transaction.transactionState == .failed{
                 print("Transaction Failed")
                 SKPaymentQueue.default().finishTransaction(transaction)
+            }else if transaction.transactionState == .restored{
+                showPremiumQuotes()
+                print("Transaction Restored")
+                SKPaymentQueue.default().finishTransaction(transaction)
             }
         }
     }
@@ -110,12 +114,13 @@ class QuoteTableViewController: UITableViewController,SKPaymentTransactionObserv
     }
     
     func showPremiumQuotes(){
+        UserDefaults.standard.set(true,forKey: "sds")
         quotesToShow.append(contentsOf: premiumQuotes)
         tableView.reloadData()
     }
     
     @IBAction func restorePressed(_ sender: UIBarButtonItem) {
-        
+        SKPaymentQueue.default().restoreCompletedTransactions()
     }
 
 
